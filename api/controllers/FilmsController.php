@@ -12,11 +12,18 @@ class filmsController{
 	}
 
 	public function actionFind(){
+		$sql = 'SELECT f.`name` AS `Nom film`, f.`desc_film`, f.`auteur`,  f.`date_diffusion`,  f.`date_creation`,
+		group_concat(distinct c.`name` SEPARATOR "|") AS `Nom catégorie`
+		FROM `film` AS f
+		LEFT JOIN  `film_categorie` AS fc ON fc.`id_film` = f.`id`
+		RIGHT JOIN  `categorie` AS c ON c.`id` = fc.`id_categorie`
+		GROUP BY f.`id`';
+
 		$this->db->begin();
-		$pr = $this->db->exec('SELECT * FROM `film`');
+		$pr = $this->db->exec($sql);
 		$this->db->commit();
 
-		Api::response(200, $pr );
+		Api::response(200, $pr);
 	}
 
 	public function actionCreate(){
