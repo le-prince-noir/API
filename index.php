@@ -18,4 +18,9 @@ $f3->route('GET /',
 	}
 );
 
+if(!Api::validToken()){
+    Api::response(400, array('error' => 'pas user'));
+    return false;
+}
+
 $f3->run();

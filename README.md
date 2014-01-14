@@ -5,12 +5,12 @@
 ## FILMS
 
 ```
-GET /v1/films
+GET /films?token=
 Liste de tout les films
 ```
 
 ```
-POST /v1/films
+POST /films?token=
 Création film : champs :
 -> name
 -> desc_film
@@ -19,7 +19,7 @@ Création film : champs :
 ```
 
 ```
-PUT /v1/films
+PUT /films?token=
 Modification film : champs :
 -> name
 -> desc_film
@@ -29,29 +29,29 @@ Modification film : champs :
 ```
 
 ```
-DELETE /v1/films/@id
+DELETE /films/@id?token=
 Suppression film : champ :
 -> id
 ```
 
 ```
-GET /v1/films/cat/@cat
+GET /films/cat/@cat?token=
 Liste les films par la categorie
 ```
 
 ## USERS
 
 ```
-GET /v1/user/@pseudo/pref
+GET /user/@pseudo/pref?token=
 Liste les films que l'utilisateur like
 ```
 
 ```
-GET /v1/user/@pseudo/view
+GET /user/@pseudo/view?token=
 Liste les films que l'utilisateur a déjà vu
 ```
 
 ```
-GET /v1/user/@pseudo/love
+GET /user/@pseudo/love?token=
 Liste les films que l'utilisateur aimerait voir
 ```

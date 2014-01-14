@@ -13,17 +13,7 @@ class filmsController{
 
 	// récupère tout les films
 	public function actionFindAllFilm(){
-		$sql = 'SELECT f.`name` AS `nom_film`, f.`desc_film`, f.`auteur`,  f.`date_diffusion`,  f.`date_creation`,
-		group_concat(distinct c.`name` SEPARATOR "|") AS `nom_categorie`
-		FROM `film` AS f
-		LEFT JOIN  `film_categorie` AS fc ON fc.`id_film` = f.`id`
-		LEFT JOIN  `categorie` AS c ON c.`id` = fc.`id_categorie`
-		GROUP BY f.`id`';
-
-		$this->db->begin();
-		$pr = $this->db->exec($sql);
-		$this->db->commit();
-
+		$pr = films::__getAllFilms();
 		Api::response(200, $pr);
 	}
 
@@ -36,7 +26,7 @@ class filmsController{
 
 		$valid = ($name != "" && $desc != "" && $auteur != "" && $date_diffusion != "") ? true : false;
 
-		$sql = "INSERT INTO `f5ilm` (`name`, `desc_film`, `auteur`, `date_diffusion`, `date_creation`)
+		$sql = "INSERT INTO `film` (`name`, `desc_film`, `auteur`, `date_diffusion`, `date_creation`)
         VALUES('$name', '$desc', '$auteur', '$date_diffusion', '$date_creation' )";
 
   		$this->db->begin();
