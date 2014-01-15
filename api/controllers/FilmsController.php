@@ -11,8 +11,12 @@ class filmsController{
 
 	// récupère tout les films
 	public function actionFindAllFilm(){
-		$allFilms = $this->model->__getAllFilms();
+		$allFilms = $this->model->findAllFilm();
 		Api::response(200, $allFilms);
+	}
+	public function actionFindFilm(){
+		$film = $this->model->findFilm();
+		Api::response(200, $film);
 	}
 
 	public function actionCreateFilm(){
@@ -55,6 +59,5 @@ class filmsController{
 
 	public function actionUpdateFilm(){
 		$this->model->updateFilm();
-		Api::response(200, array('valid'=>'Film bien modifie'));
 	}
 }

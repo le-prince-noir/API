@@ -10,27 +10,23 @@ class usersController{
 
 	// récupère tout les users
 	public function actionFindAllUser(){
-		$allUsers = $this->model->findAllUser();
-		Api::response(200, $allUsers);
+		$this->model->findAllUser();
+	}
+	// récupère tout les users
+	public function actionFindUser(){
+		$this->model->findUser();
 	}
 
     public function actionDeleteUser(){
 		$this->model->deleteUser();
-		Api::response(200, array('valid'=>'Utilisateur bien supprime'));
     }
 
 	public function actionCreateUser(){
-		$creationUser = $this->model->createUser();
-
-		if($creationUser)
-			Api::response(200, array('valid'=>'Utilisateur ajoute'));
-		else
-			Api::response(400, array('error'=>'Un problème est survenu'));
+		$this->model->createUser();
 	}
 
 	public function actionUpdateUser(){
 		$this->model->updateUser();
-		Api::response(200, array('valid'=>'Utilisateur bien modifie'));
 	}
 
 }

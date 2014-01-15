@@ -47,7 +47,7 @@ class Api{
 		    'root',
 		    'root'
 		);
-		$sql = 'SELECT token FROM `user` WHERE token = "'.F3::get('GET.token').'"';
+		$sql = 'SELECT `token` FROM `user` WHERE `token` = "'.F3::get('GET.token').'"';
 
 		$db->begin();
 		$pr = $db->exec($sql);
