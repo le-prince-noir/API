@@ -10,6 +10,7 @@ class users{
         );
     }
 
+    // récupère le niveau de l'utilisateur
     private function getNiveauUser($token){
 
         $db = $this->db();
@@ -24,11 +25,13 @@ class users{
         return $niveau;
     }
 
+    // récupère tout les utilisateurs
     public function findAllUser(){
         $db = $this->db();
 
         // récupère le niveau de l'user
         $niveau = $this->getNiveauUser(F3::get('GET.token'));
+
         if ($niveau == 'super-admin' || $niveau == 'admin'){
             $sql = 'SELECT u.`pseudo`, u.`email`, u.`niveau`, u.`token`
             FROM `user` AS u';
@@ -37,15 +40,13 @@ class users{
             FROM `user` AS u';
         }
         $db->begin();
-        $pr = $db->exec($sql);
+        $users = $db->exec($sql);
         $db->commit();
 
-        if($pr)
-            Api::response(200, array('valid'=>$pr));
-        else
-            Api::response(400, array('error'=>'Un problème est survenu'));
+        return $users;
     }
 
+    // récupère un utilisateur
     public function findUser(){
         $db = $this->db();
 
@@ -62,15 +63,14 @@ class users{
             WHERE u.`id` = '.F3::get('PARAMS.id').' AND u.`token` ="'.F3::get('GET.token').'"';
         }
         $db->begin();
-        $pr = $db->exec($sql);
+        $user = $db->exec($sql);
         $db->commit();
 
-        if($pr)
-            Api::response(200, array('valid'=>$pr));
-        else
-            Api::response(400, array('error'=>'Un problème est survenu'));
+        return $user;
     }
 
+    // supprime un utilisateur
+    // mais aussi les films like, vu, et qu'il aimerait voir
     public function deleteUser(){
 
         $db = $this->db();
@@ -99,14 +99,13 @@ class users{
                 $db->exec($sql);
                 $db->commit();
             }
-
-
-            Api::response(200, array('valid'=>'Utilisateur bien supprime'));
+            return true;
         }else{
-            Api::response(400, array('error'=>'Un problème est survenu'));
+            return false;
         }
     }
 
+    // création d'un utilisateur
     public function createUser(){
 
         $db = $this->db();
@@ -124,15 +123,13 @@ class users{
         VALUES('$niveau','$pseudo', '$mdp', '$email', '$token', '$date_creation' )";
 
         $db->begin();
-        $db->exec($sql);
+        $create = $db->exec($sql);
         $db->commit();
 
-        if($valid)
-            Api::response(200, array('valid'=>'Utilisateur ajoute'));
-        else
-            Api::response(400, array('error'=>'Un problème est survenu'));
+        return $create;
     }
 
+    // modification un utilisateur
     public function updateUser(){
 
         $db = $this->db();
@@ -151,9 +148,9 @@ class users{
             $db->begin();
             $db->exec($sql);
             $db->commit();
-            Api::response(200, $data);
+            return true;
         }else{
-          Api::response(400, array('error'=>'Erreur pdt la modification'));
+          return false;
         }
     }
 }

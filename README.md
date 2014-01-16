@@ -1,12 +1,15 @@
 # API Documention
 
-# Endpoints
-
 ## FILMS
 
 ```
 GET /films?token=
 Liste de tout les films
+```
+
+```
+GET /films/@id?token=
+Affiche un film
 ```
 
 ```
@@ -65,7 +68,7 @@ Liste tous les utilisateurs
 
 ```
 GET /users/@id?token=
-Affiche 1 utilisateur
+Affiche un utilisateur
 ```
 
 ```

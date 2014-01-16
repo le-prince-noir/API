@@ -57,4 +57,14 @@ class Api{
 		else
 			return false;
 	}
+
+	static function validId(){
+		$id = F3::get('PARAMS.id');
+
+		if( !is_numeric($id) ){
+			return -1;
+		}else{
+			return $id;
+		}
+	}
 }

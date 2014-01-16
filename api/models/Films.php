@@ -2,7 +2,13 @@
 
 class films{
 
+    private $url = "localhost";
+    private $login = "root";
+    private $mdp = "root";
+    private $base = "api-dev";
+
     private function db(){
+
         return new DB\SQL(
             'mysql:host=localhost;port=3306;dbname=api-dev',
             'root',
@@ -20,26 +26,26 @@ class films{
             GROUP BY f.`id`';
 
             $db->begin();
-            $pr = $db->exec($sql);
+            $films = $db->exec($sql);
             $db->commit();
 
-        return $pr;
+            return $films;
     }
 
-    public function findFilm(){
+    public function findFilm($id){
         $db = $this->db();
         $sql = 'SELECT f.`name` AS `nom_film`, f.`desc_film`, f.`auteur`,  f.`date_diffusion`,  f.`date_creation`,
             group_concat(distinct c.`name` SEPARATOR "|") AS `nom_categorie`
             FROM `film` AS f
             LEFT JOIN  `film_categorie` AS fc ON fc.`id_film` = f.`id`
             LEFT JOIN  `categorie` AS c ON c.`id` = fc.`id_categorie`
-            WHERE f.`id` ='.F3::get('PARAMS.id');
+            WHERE f.`id` = '.$id;
 
             $db->begin();
-            $pr = $db->exec($sql);
+            $films = $db->exec($sql);
             $db->commit();
 
-        return $pr;
+            return $films;
     }
 
     public function createFilm(){
@@ -67,6 +73,7 @@ class films{
             return false;
     }
 
+    // modification d'un film
     public function updateFilm(){
 
         $db = $this->db();
@@ -85,12 +92,13 @@ class films{
             $db->begin();
             $db->exec($sql);
             $db->commit();
-            Api::response(200, $data);
+          return true;
         }else{
-          Api::response(400, array('error'=>'Erreur pdt la modification'));
+          return false;
         }
     }
 
+    // suppression d'un film
     public function deleteFilm(){
 
         $db = $this->db();
@@ -98,12 +106,13 @@ class films{
         $sql = 'DELETE FROM `film` WHERE `id` ='.F3::get('GET.id');
 
         $db->begin();
-        $db->exec($sql);
+        $del = $db->exec($sql);
         $db->commit();
 
-        return true;
+        return $del;
     }
 
+    // récupère les films en fonction d'une catégorie
     public function FindCat(){
         $db = $this->db();
 
@@ -116,12 +125,14 @@ class films{
         GROUP BY f.`id`';
 
         $db->begin();
-        $pr = $db->exec($sql);
+        $films = $db->exec($sql);
         $db->commit();
 
-        return $pr;
+        return $films;
     }
 
+    // récupère les films en fonction du choix de l'utilsateur
+    // film_like / film_view / film_love
     public function userAction($choix){
         $db = $this->db();
 
@@ -132,13 +143,13 @@ class films{
         LEFT JOIN  `categorie` AS c ON c.`id` = fc.`id_categorie`
         LEFT JOIN  `user` AS u ON u.`pseudo` = "'.F3::get('PARAMS.pseudo').'"
         LEFT JOIN  `'.$choix.'` AS choix ON choix.`id_user` = `u`.id
-        WHERE f.`id` = choix.`id_film`
+        WHERE f.`id` = choix.`id_film` AND u.`token` = "'.F3::get('GET.token').'"
         GROUP BY f.`id`';
 
         $db->begin();
-        $pr = $db->exec($sql);
+        $films = $db->exec($sql);
         $db->commit();
 
-        return $pr;
+        return $films;
     }
 }
