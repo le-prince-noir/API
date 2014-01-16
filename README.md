@@ -22,7 +22,7 @@ Création film : champs :
 ```
 
 ```
-PUT /films?token=
+PUT /films/@id?token=
 Modification film : champs :
 -> name
 -> desc_film
@@ -47,17 +47,17 @@ Liste les films par la categorie
 ### En fonction du niveau de l'utilisateur : super-admin | admin | user // les infos affichés sont diff
 
 ```
-GET /user/@pseudo/pref?token=
+GET /user/self/liked?token=
 Liste les films que l'utilisateur like
 ```
 
 ```
-GET /user/@pseudo/view?token=
+GET /user/self/watched?token=
 Liste les films que l'utilisateur a déjà vu
 ```
 
 ```
-GET /user/@pseudo/love?token=
+GET /user/self/wanted?token=
 Liste les films que l'utilisateur aimerait voir
 ```
 
@@ -72,7 +72,7 @@ Affiche un utilisateur
 ```
 
 ```
-POST /users/?token=
+POST /users?token=
 Création d'un utilisateur : champs :
 -> pseudo
 -> mdp
@@ -81,12 +81,12 @@ Création d'un utilisateur : champs :
 ```
 
 ```
-DELETE /users?token=
+DELETE /users/@id?token=
 Suppression d'un utilisateur
 ```
 
 ```
-PUT /users?token=
+PUT /users/@id?token=
 Modification d'un utilisateur champs :
 -> pseudo
 -> mdp

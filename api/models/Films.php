@@ -10,12 +10,13 @@ class films{
     private function db(){
 
         return new DB\SQL(
-            'mysql:host=localhost;port=3306;dbname=api-dev',
-            'root',
-            'root'
+            'mysql:host='.$this->url.';port=3306;dbname='.$this->base,
+            $this->login,
+            $this->mdp
         );
     }
 
+    // récupère tout les films
     public function findAllFilm(){
         $db = $this->db();
         $sql = 'SELECT f.`name` AS `nom_film`, f.`desc_film`, f.`auteur`,  f.`date_diffusion`,  f.`date_creation`,
@@ -32,6 +33,7 @@ class films{
             return $films;
     }
 
+    // récupère un film
     public function findFilm($id){
         $db = $this->db();
         $sql = 'SELECT f.`name` AS `nom_film`, f.`desc_film`, f.`auteur`,  f.`date_diffusion`,  f.`date_creation`,
@@ -48,6 +50,7 @@ class films{
             return $films;
     }
 
+    // création d'un film
     public function createFilm(){
 
         $db = $this->db();
@@ -103,7 +106,7 @@ class films{
 
         $db = $this->db();
 
-        $sql = 'DELETE FROM `film` WHERE `id` ='.F3::get('GET.id');
+        $sql = 'DELETE FROM `film` WHERE `id` ='.F3::get('PARAMS.id');
 
         $db->begin();
         $del = $db->exec($sql);
@@ -135,13 +138,14 @@ class films{
     // film_like / film_view / film_love
     public function userAction($choix){
         $db = $this->db();
+        $pseudo = $this->getPseudo(F3::get('GET.token'));
 
         $sql = 'SELECT f.`name` AS `nom_film`, f.`desc_film`, f.`auteur`,  f.`date_diffusion`,  f.`date_creation`,
         group_concat(distinct c.`name` SEPARATOR "|") AS `nom_categorie`
         FROM `film` AS f
         LEFT JOIN  `film_categorie` AS fc ON fc.`id_film` = f.`id`
         LEFT JOIN  `categorie` AS c ON c.`id` = fc.`id_categorie`
-        LEFT JOIN  `user` AS u ON u.`pseudo` = "'.F3::get('PARAMS.pseudo').'"
+        LEFT JOIN  `user` AS u ON u.`pseudo` = "'.$pseudo.'"
         LEFT JOIN  `'.$choix.'` AS choix ON choix.`id_user` = `u`.id
         WHERE f.`id` = choix.`id_film` AND u.`token` = "'.F3::get('GET.token').'"
         GROUP BY f.`id`';
@@ -152,4 +156,19 @@ class films{
 
         return $films;
     }
+
+
+    // récupère le pseudo via le token
+    private function getPseudo($token){
+        $db = $this->db();
+
+        $sql = "SELECT pseudo FROM user WHERE token ='".$token."'";
+
+        $db->begin();
+        $pseudo = $db->exec($sql);
+        $db->commit();
+
+        return $pseudo[0]['pseudo'];
+    }
+
 }

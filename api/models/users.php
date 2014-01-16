@@ -1,12 +1,17 @@
 <?php
 
 class users{
+    private $url = "localhost";
+    private $login = "root";
+    private $mdp = "root";
+    private $base = "api-dev";
 
     private function db(){
+
         return new DB\SQL(
-            'mysql:host=localhost;port=3306;dbname=api-dev',
-            'root',
-            'root'
+            'mysql:host='.$this->url.';port=3306;dbname='.$this->base,
+            $this->login,
+            $this->mdp
         );
     }
 
@@ -76,16 +81,16 @@ class users{
         $db = $this->db();
 
         // récupère le niveau de l'user
-        $niveau = $this->getNiveauUser(F3::get('GET.token'));
+        $niveau = $this->getNiveauUser(F3::get('PARAMS.token'));
 
         if ($niveau == 'super-admin'){
-            $sql = "DELETE FROM `user` WHERE `id` =".F3::get('GET.id') ;
+            $sql = "DELETE FROM `user` WHERE `id` =".F3::get('PARAMS.id') ;
         }
         if ($niveau == 'admin'){
-            $sql = "DELETE FROM `user` WHERE `id` =".F3::get('GET.id')." AND `niveau` IN('user','admin')" ;
+            $sql = "DELETE FROM `user` WHERE `id` =".F3::get('PARAMS.id')." AND `niveau` IN('user','admin')" ;
         }
         if ($niveau == 'user'){
-            $sql = "DELETE FROM `user` WHERE `id` =".F3::get('GET.id')." AND `niveau` = 'user' AND `token` ='".F3::get('GET.token')."'";
+            $sql = "DELETE FROM `user` WHERE `id` =".F3::get('PARAMS.id')." AND `niveau` = 'user' AND `token` ='".F3::get('GET.token')."'";
         }
 
         $db->begin();
@@ -95,7 +100,7 @@ class users{
             $array = array('film_like','film_view','film_love');
             foreach ($array as $table) {
                 $db->begin();
-                $sql = "DELETE FROM `$table` WHERE `id_user` =". F3::get('GET.id');
+                $sql = "DELETE FROM `$table` WHERE `id_user` =". F3::get('PARAMS.id');
                 $db->exec($sql);
                 $db->commit();
             }

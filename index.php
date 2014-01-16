@@ -17,10 +17,15 @@ $f3->route('GET /',
 		Api::response(404, 0);
 	}
 );
+$f3->set('ONERROR',function($f3){
+    // $error = F3::get('ERROR');
+    echo \Template::instance()->render('error.html');
+});
 
 if(!Api::validToken()){
-    Api::response(400, array('error' => 'pas user'));
+    Api::response(400, array('error' => 'pas utilisateur'));
     return false;
 }
+
 
 $f3->run();
