@@ -13,16 +13,18 @@ $f3->config('api/configs/routes.ini');
 
 
 $f3->route('GET /',
-	function($f3) {
-		Api::response(404, 0);
-	}
+    function($f3) {
+        Api::response(404, 0);
+    }
 );
+
+$hive = $f3->hive();
+
 $f3->set('ONERROR',function($f3){
     // $error = F3::get('ERROR');
     echo \Template::instance()->render('error.html');
 });
-
-if(!Api::validToken()){
+if(!Api::validToken() && $hive['URI'] != '/v1/users'){
     Api::response(400, array('error' => 'pas utilisateur'));
     return false;
 }
