@@ -72,7 +72,8 @@ Affiche un utilisateur
 ```
 
 ```
-POST /v1/users?token=
+POST /v1/users
+Pas de token pour la création d'un nouvel utilisateur (car il ne le connait pas encore :) )
 Création d'un utilisateur : champs :
 -> pseudo
 -> mdp
