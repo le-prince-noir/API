@@ -11,7 +11,6 @@ $f3->config('api/configs/routes.ini');
 
 
 
-
 $f3->route('GET /',
     function($f3) {
         Api::response(404, 0);
@@ -20,10 +19,14 @@ $f3->route('GET /',
 
 $hive = $f3->hive();
 
+// gestion des erreurs
 $f3->set('ONERROR',function($f3){
-    // $error = F3::get('ERROR');
-    echo \Template::instance()->render('error.html');
+    $error = F3::get('ERROR');
+    Api::response($error['code'], $error['status']);
 });
+
+// accès à l'api via le token
+// les inscriptions sont autorisées pour tout le monde
 if(!Api::validToken() && $hive['URI'] != '/v1/users'){
     Api::response(400, array('error' => 'pas utilisateur'));
     return false;
