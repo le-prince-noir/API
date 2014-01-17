@@ -3,17 +3,17 @@
 ## FILMS
 
 ```
-GET /films?token=
+GET /v1/films?token=
 Liste de tout les films
 ```
 
 ```
-GET /films/@id?token=
+GET /v1/films/@id?token=
 Affiche un film
 ```
 
 ```
-POST /films?token=
+POST /v1/films?token=
 Création film : champs :
 -> name
 -> desc_film
@@ -22,7 +22,7 @@ Création film : champs :
 ```
 
 ```
-PUT /films/@id?token=
+PUT /v1/films/@id?token=
 Modification film : champs :
 -> name
 -> desc_film
@@ -32,13 +32,13 @@ Modification film : champs :
 ```
 
 ```
-DELETE /films/@id?token=
+DELETE /v1/films/@id?token=
 Suppression film : champ :
 -> id
 ```
 
 ```
-GET /films/cat/@cat?token=
+GET /v1/films/cat/@cat?token=
 Liste les films par la categorie
 ```
 
@@ -47,32 +47,32 @@ Liste les films par la categorie
 ### En fonction du niveau de l'utilisateur : super-admin | admin | user // les infos affichés sont diff
 
 ```
-GET /user/self/liked?token=
+GET /v1/user/self/liked?token=
 Liste les films que l'utilisateur like
 ```
 
 ```
-GET /user/self/watched?token=
+GET /v1/user/self/watched?token=
 Liste les films que l'utilisateur a déjà vu
 ```
 
 ```
-GET /user/self/wanted?token=
+GET /v1/user/self/wanted?token=
 Liste les films que l'utilisateur aimerait voir
 ```
 
 ```
-GET /users?token=
+GET /v1/users?token=
 Liste tous les utilisateurs
 ```
 
 ```
-GET /users/@id?token=
+GET /v1/users/@id?token=
 Affiche un utilisateur
 ```
 
 ```
-POST /users?token=
+POST /v1/users?token=
 Création d'un utilisateur : champs :
 -> pseudo
 -> mdp
@@ -81,12 +81,12 @@ Création d'un utilisateur : champs :
 ```
 
 ```
-DELETE /users/@id?token=
+DELETE /v1/users/@id?token=
 Suppression d'un utilisateur
 ```
 
 ```
-PUT /users/@id?token=
+PUT /v1/users/@id?token=
 Modification d'un utilisateur champs :
 -> pseudo
 -> mdp

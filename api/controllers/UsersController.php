@@ -53,11 +53,11 @@ class usersController{
 	public function actionUpdateUser(){
 		$modif = $this->model->updateUser();
 
-		if($modif){
+		if($modif)
 			Api::response(200, array('valid'=>'Utilisateur modifie'));
-		}else{
+		else
 			Api::response(400, array('error'=>'Erreur pdt la modification'));
-		}
+
 	}
 
 }
